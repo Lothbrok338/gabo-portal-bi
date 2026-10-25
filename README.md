@@ -52,6 +52,6 @@ Entrar al administrador `/admin/` con el superusuario, crear una empresa, asigna
 
 ## Producción (todavía no autorizada)
 
-Configurar `DEBUG=0`, `DJANGO_SECRET_KEY`, `ALLOWED_HOSTS`, `DATABASE_URL` (PostgreSQL) y `CSRF_TRUSTED_ORIGINS`. Ejecutar `python manage.py migrate` en un job controlado y servir con `gunicorn portal.wsgi:application --bind 0.0.0.0:$PORT`. Revisar cookies, TLS, respaldos, registros, controles antifuerza-bruta y aislamiento multicliente antes de publicar.
+Configurar `DEBUG=0`, `DJANGO_SECRET_KEY`, `ALLOWED_HOSTS`, `DATABASE_URL` (PostgreSQL) y `CSRF_TRUSTED_ORIGINS`. Ejecutar `python manage.py collectstatic --noinput` durante el build y `python manage.py migrate` en un job controlado y servir con `gunicorn portal.wsgi:application --bind 0.0.0.0:$PORT`. Revisar cookies, TLS, respaldos, registros, controles antifuerza-bruta y aislamiento multicliente antes de publicar.
 
 **No conectar un webhook de despliegue, crear servicios de Railway, modificar repositorios ajenos ni subir información institucional sin aprobación.**

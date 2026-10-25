@@ -20,4 +20,6 @@ jobs:
           ALLOWED_HOSTS: 'localhost,127.0.0.1,testserver'
         run: |
           python manage.py check
+          python manage.py makemigrations --check --dry-run
+          python manage.py collectstatic --noinput
           python manage.py test
