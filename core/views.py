@@ -61,7 +61,7 @@ def manage_company(request, company_id):
 @login_required
 def manage_dashboard_create(request, company_id):
     company = _company_or_404(request.user, company_id)
-    form = DashboardForm(request.POST or None)
+    form = DashboardForm(request.POST if request.method == "POST" else None)
     if request.method == "POST" and form.is_valid():
         report = form.save(commit=False)
         report.company = company  # nunca confiar en company enviada por el navegador
@@ -75,7 +75,7 @@ def manage_dashboard_create(request, company_id):
 def manage_dashboard_edit(request, company_id, pk):
     company = _company_or_404(request.user, company_id)
     report = get_object_or_404(Dashboard, pk=pk, company=company)
-    form = DashboardForm(request.POST or None, instance=report)
+    form = DashboardForm(request.POST if request.method == "POST" else None, instance=report)
     if request.method == "POST" and form.is_valid():
         form.save()
         messages.success(request, "Cambios guardados correctamente.")
@@ -90,7 +90,7 @@ def manage_dashboard_grants(request, company_id, pk):
     company = _company_or_404(request.user, company_id)
     report = get_object_or_404(Dashboard, pk=pk, company=company)
     initial = {"members": list(report.grants.values_list("user_id", flat=True))}
-    form = DashboardGrantsForm(request.POST or None, company=company, initial=initial)
+    form = DashboardGrantsForm(request.POST if request.method == "POST" else None, company=company, initial=initial)
     if request.method == "POST" and form.is_valid():
         selected = set(form.cleaned_data["members"].values_list("pk", flat=True))
         with transaction.atomic():

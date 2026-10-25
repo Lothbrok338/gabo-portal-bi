@@ -150,7 +150,7 @@ class TenantManagementTests(TestCase):
         url = reverse("manage_dashboard_grants", args=[self.a.id, self.da.id])
         response = self.client.post(url, {"members": [str(self.manager_b.id)]})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Seleccione una opción válida")
+        self.assertContains(response, "no es una de las opciones disponibles")
         self.assertFalse(DashboardGrant.objects.filter(dashboard=self.da, user=self.manager_b).exists())
         self.assertTrue(DashboardGrant.objects.filter(dashboard=self.da, user=self.viewer).exists())
 
