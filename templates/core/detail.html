@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ dashboard.title }} — GABO Portal BI{% endblock %}
+{% block content %}
+<div class="page-heading report-title">
+  <p class="eyebrow">{{ dashboard.company.name }} / INFORMES</p>
+  <h1>{{ dashboard.title }}</h1>
+  <p class="muted">{{ dashboard.description }}</p>
+  <a href="{% url 'dashboard_list' %}" class="back-link">← Volver a mis informes</a>
+</div>
+{% if dashboard.public_url %}
+<section class="embedded-panel" aria-label="Informe Power BI público">
+  <p class="notice"><strong>Informe público:</strong> se visualiza mediante Publish to web. Las restricciones de este portal no restringen el enlace de origen en Microsoft.</p>
+  <iframe src="{{ dashboard.public_url }}" title="Power BI — {{ dashboard.title }}" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
+</section>
+{% else %}
+<section class="demo-panel">
+  <p class="eyebrow">DATOS FICTICIOS · VISUALIZACIÓN SIMULADA</p>
+  <h2>{{ dashboard.title }}</h2>
+  <div class="demo-stats"><div><small>Ingresos</small><strong>Bs 892.400</strong></div><div><small>Egresos</small><strong>Bs 646.500</strong></div><div><small>Resultado</small><strong>Bs 245.900</strong></div></div>
+  <div class="demo-bars" aria-label="Gráfico ilustrativo sin conexión Power BI"><i style="height:43%"></i><i style="height:65%"></i><i style="height:52%"></i><i style="height:80%"></i><i style="height:71%"></i><i style="height:94%"></i><i style="height:83%"></i></div>
+  <p class="muted">Demo local: asigna una URL pública de Power BI desde la administración para reemplazar esta simulación por el informe real.</p>
+</section>
+{% endif %}
+{% endblock %}

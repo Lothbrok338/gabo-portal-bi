@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Mis informes — GABO Portal BI{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <p class="eyebrow">BIBLIOTECA DE DASHBOARDS</p>
+  <h1>Centro de análisis <span class="gradient-text">empresarial</span></h1>
+  <p class="muted">Los informes disponibles dependen de los permisos asignados a tu usuario.</p>
+</div>
+<section class="summary-grid" aria-label="Resumen del portal">
+  <article class="summary"><span>Informes autorizados</span><strong>{{ dashboards|length }}</strong><small>Catálogo visible para tu cuenta</small></article>
+  <article class="summary"><span>Experiencia</span><strong>BI</strong><small>Dashboards interactivos</small></article>
+  <article class="summary"><span>Acceso</span><strong class="green-text">Activo</strong><small>Sesión iniciada correctamente</small></article>
+</section>
+<section class="section-head"><h2>Tus dashboards</h2><span>Power BI + GABO Portal</span></section>
+<div class="report-grid">
+  {% for dash in dashboards %}
+  <article class="report-card">
+    <div class="report-art"><span class="tiny-label">INFORME {{ forloop.counter|stringformat:'02d' }}</span><div class="art-bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="report-body">
+      <p class="company-label">{{ dash.company.name }}</p>
+      <h3>{{ dash.title }}</h3>
+      <p class="muted">{{ dash.description|default:'Dashboard empresarial de demostración' }}</p>
+      <div class="report-actions">
+        <span class="status-chip">{% if dash.public_url %}Informe público vinculado{% else %}Demo sin conexión{% endif %}</span>
+        <a href="{% url 'dashboard_detail' dash.pk %}" class="action-btn">Abrir informe →</a>
+      </div>
+    </div>
+  </article>
+  {% empty %}
+  <div class="empty-state"><h3>No tienes informes asignados</h3><p>El administrador del portal puede concederte acceso a los dashboards de tu empresa.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión — GABO Portal BI{% endblock %}
+{% block anonymous_content %}
+<section class="login-card">
+  <div class="login-mark">G</div>
+  <p class="eyebrow">SOLUCIONES EMPRESARIALES GABO</p>
+  <h1>Tu información.<br><span class="gradient-text">Una sola plataforma.</span></h1>
+  <p class="muted">Ingresa a tu biblioteca de informes empresariales.</p>
+  {% if form.errors %}<div class="alert" role="alert">Usuario o contraseña incorrectos.</div>{% endif %}
+  {% if next and user.is_authenticated %}<div class="alert">No tienes autorización para visitar esa página.</div>{% endif %}
+  <form method="post" action="{% url 'login' %}" class="login-form">
+    {% csrf_token %}
+    <label for="id_username">Usuario</label>
+    <input id="id_username" name="username" type="text" autocomplete="username" autofocus required maxlength="150">
+    <label for="id_password">Contraseña</label>
+    <input id="id_password" name="password" type="password" autocomplete="current-password" required>
+    <input type="hidden" name="next" value="{{ next|default:'' }}">
+    <button class="btn-primary" type="submit">Entrar al portal →</button>
+  </form>
+  <p class="security-note">Demo privada del portal. Los informes Power BI insertados mediante Publish to web siguen siendo públicos en Microsoft.</p>
+</section>
+{% endblock %}
