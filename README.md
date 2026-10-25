@@ -61,3 +61,8 @@ Configurar `DEBUG=0`, `DJANGO_SECRET_KEY`, `ALLOWED_HOSTS`, `DATABASE_URL` (Post
 Un usuario con rol `manager` puede entrar en `/portal/gestion/` para crear informes, modificar su título/URL/estado y conceder o revocar el acceso a miembros de su empresa. El administrador global sigue utilizando `/admin/` para crear empresas, usuarios y membresías. Los lectores no pueden entrar en gestión.
 
 La orden `python manage.py seed_demo` otorga rol de **gestor** a `gabo_demo` y deja los otros perfiles de demostración como lectores. Los usuarios y contraseñas de demostración son únicamente para el laboratorio local.
+## Despliegue de laboratorio en Railway
+
+La imagen Docker ejecuta `collectstatic` con almacenamiento Manifest, sin contraseñas ni datos de producción en la imagen. Antes de cada release, Railway debe ejecutar `python manage.py migrate`, con `DATABASE_URL` apuntando al Postgres privado del mismo proyecto. El servicio debe usar `/health/` como healthcheck, incluir `healthcheck.railway.app` en `ALLOWED_HOSTS` y estar protegido con `DEBUG=0`. No ejecutar `seed_demo` en línea ni crear superusuarios con claves de ejemplo.
+
+El entorno y base de datos generan consumo facturable según el plan y créditos Railway existentes. El despliegue no debe mezclar recursos de otros proyectos ni publicar informes reales.

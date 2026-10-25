@@ -1,3 +1,4 @@
+from django.db import connection, OperationalError
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -109,4 +110,9 @@ def manage_dashboard_grants(request, company_id, pk):
 
 
 def health(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+    except OperationalError:
+        return JsonResponse({"status": "error"}, status=503)
     return JsonResponse({"status": "ok"})

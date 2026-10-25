@@ -183,3 +183,9 @@ class TenantManagementTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.da.refresh_from_db()
         self.assertEqual(self.da.title, "Alfa actualizado")
+
+class DeploymentHealthTests(TestCase):
+    def test_health_endpoint_checks_database(self):
+        response = self.client.get(reverse("health"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["status"], "ok")
