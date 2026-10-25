@@ -38,3 +38,11 @@ Usuario → HTTPS → Django (login, sesión y comprobación de permisos) → ca
 5. Agregar tests de uso real (navegador, mobile, CSRF, reverse proxy y seguridad).
 6. Autorizar infraestructura Railway/Cloudflare, configurar PostgreSQL, backups, monitoreo y despliegue.
 7. Medir costo por cliente/mes y soporte antes de comercialización.
+
+## Iteración 0.2 — gestión empresarial (laboratorio)
+
+- `/portal/gestion/` lista únicamente las empresas administrables por el usuario.
+- Cada gestor puede crear y editar informes solo de su empresa y elegir qué miembros tienen acceso desde el portal; los lectores no acceden a estas pantallas.
+- Ningún formulario acepta un identificador de empresa arbitrario desde el navegador. Toda ruta comprueba pertenencia y rol del gestor; recurso ajeno recibe 404.
+- Las asignaciones se validan contra la membresía activa de la empresa; edición y revocación son transaccionales.
+- **Pendiente de la siguiente iteración:** alta/baja de usuarios, auditoría persistente de cambios de permisos, MFA, controles de abuso y revisión de seguridad para producción.

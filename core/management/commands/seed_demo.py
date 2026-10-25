@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 self.stdout.write(f"Usuario {name} | Contraseña temporal SOLO PARA DEMO: {pwd}")
             else:
                 self.stdout.write(f"Usuario {name} ya existe: NO se modifica su contraseña")
-            Membership.objects.get_or_create(user=user, company=company)
+            Membership.objects.update_or_create(user=user, company=company, defaults={"role": "manager" if name == "gabo_demo" else "viewer"})
             for i in ids:
                 DashboardGrant.objects.get_or_create(user=user, dashboard=reports[i])
         self.stdout.write(self.style.SUCCESS("Demo creada. Informes SIN enlaces Power BI y datos 100% ficticios."))

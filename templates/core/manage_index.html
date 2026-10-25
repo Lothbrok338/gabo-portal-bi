@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Gestión — GABO Portal BI{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <p class="eyebrow">GESTIÓN DEL PORTAL</p>
+  <h1>Administrar <span class="gradient-text">empresas</span></h1>
+  <p class="muted">Elige una empresa para gestionar sus dashboards y la asignación de accesos.</p>
+</div>
+<div class="management-grid">
+  {% for company in companies %}
+    <a class="management-tile" href="{% url 'manage_company' company.id %}">
+      <span class="tile-symbol" aria-hidden="true">▤</span>
+      <span><strong>{{ company.name }}</strong><small>Administrar informes y miembros</small></span>
+      <span aria-hidden="true">→</span>
+    </a>
+  {% empty %}
+    <div class="empty-state"><h3>Sin empresas administrables</h3><p>Necesitas el rol de gestor para administrar los informes de una empresa.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

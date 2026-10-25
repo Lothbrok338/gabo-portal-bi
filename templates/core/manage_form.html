@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{% if creating %}Nuevo informe{% else %}Editar informe{% endif %} — GABO Portal BI{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <p class="eyebrow">{{ company.name }} / GESTIÓN</p>
+  <h1>{% if creating %}Nuevo <span class="gradient-text">informe</span>{% else %}Editar <span class="gradient-text">informe</span>{% endif %}</h1>
+  <a class="back-link" href="{% url 'manage_company' company.id %}">← Volver a gestión</a>
+</div>
+<div class="form-panel">
+  <p class="notice"><strong>Atención:</strong> solo puedes vincular informes publicados como públicos o con datos ficticios. No vincules información privada de clientes.</p>
+  <form method="post" class="management-form" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}
+      <div class="form-field">
+        {% if field.name == "active" %}
+          <label class="check-row">{{ field }} <strong>{{ field.label }}</strong></label>
+        {% else %}
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+        {% endif %}
+        {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+        {% for error in field.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+      </div>
+    {% endfor %}
+    <div class="form-actions"><button type="submit" class="btn-primary">{% if creating %}Crear informe →{% else %}Guardar cambios →{% endif %}</button><a class="secondary-btn" href="{% url 'manage_company' company.id %}">Cancelar</a></div>
+  </form>
+</div>
+{% endblock %}

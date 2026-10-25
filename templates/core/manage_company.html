@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Gestión de {{ company.name }} — GABO Portal BI{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <p class="eyebrow">GESTIÓN EMPRESARIAL</p>
+  <h1>{{ company.name }}</h1>
+  <p class="muted">Administra los informes de esta empresa y qué miembros los ven en el portal.</p>
+  <div class="heading-actions"><a class="back-link" href="{% url 'manage_index' %}">← Empresas</a><a class="btn-primary" href="{% url 'manage_dashboard_create' company.id %}">+ Añadir informe</a></div>
+</div>
+<section class="summary-grid" aria-label="Resumen de administración">
+  <article class="summary"><span>Informes configurados</span><strong>{{ dashboards|length }}</strong><small>Activos e inactivos</small></article>
+  <article class="summary"><span>Miembros de la empresa</span><strong>{{ members|length }}</strong><small>Con rol de gestor o lector</small></article>
+  <article class="summary"><span>Modalidad BI</span><strong>Público</strong><small>Publish to web no asegura datos privados</small></article>
+</section>
+<section class="section-head"><h2>Informes</h2><span>Control de acceso al portal</span></section>
+<div class="management-list">
+  {% for dash in dashboards %}
+    <article class="management-row">
+      <div class="management-desc">
+        <strong>{{ dash.title }}</strong>
+        <small>{{ dash.description|default:"Sin descripción" }}</small>
+        <span class="status-chip">{% if not dash.active %}Desactivado{% elif dash.public_url %}Enlace público configurado{% else %}Demo sin conectar{% endif %}</span>
+      </div>
+      <div class="management-actions">
+        <a class="action-btn" href="{% url 'manage_dashboard_edit' company.id dash.id %}">Editar</a>
+        <a class="secondary-btn" href="{% url 'manage_dashboard_grants' company.id dash.id %}">Accesos ({{ dash.grants.count }})</a>
+      </div>
+    </article>
+  {% empty %}
+    <div class="empty-state"><h3>Aún no hay dashboards</h3><p>Agrega el primer informe para comenzar.</p></div>
+  {% endfor %}
+</div>
+<section class="section-head"><h2>Miembros</h2><span>Solo lectura en esta versión</span></section>
+<div class="members-list">
+  {% for membership in members %}
+    <div class="member-row"><span class="avatar">{{ membership.user.username|first|upper }}</span><span>{{ membership.user.username }}<small>{{ membership.get_role_display }}</small></span></div>
+  {% empty %}<p class="muted">No existen miembros todavía.</p>{% endfor %}
+</div>
+<p class="notice management-notice"><strong>Nota:</strong> Estos permisos controlan la navegación del portal. Si añades un enlace Publish to web, Microsoft mantiene público el informe original.</p>
+{% endblock %}

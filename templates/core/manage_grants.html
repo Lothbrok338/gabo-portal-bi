@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Permisos de {{ dashboard.title }} — GABO Portal BI{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <p class="eyebrow">{{ company.name }} / GESTIÓN</p>
+  <h1>Acceso a <span class="gradient-text">{{ dashboard.title }}</span></h1>
+  <p class="muted">Selecciona quiénes verán este informe en su biblioteca del portal.</p>
+  <a class="back-link" href="{% url 'manage_company' company.id %}">← Volver a gestión</a>
+</div>
+<div class="form-panel">
+  <p class="notice"><strong>Importante:</strong> esto NO protege el enlace original de Power BI Publish to web. No uses datos privados.</p>
+  <form method="post" class="management-form" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    <fieldset class="grants-fieldset"><legend>{{ form.members.label }}</legend>
+      {{ form.members }}
+    </fieldset>
+    {% for error in form.members.errors %}<p class="field-error" role="alert">{{ error }}</p>{% endfor %}
+    <p class="muted">Si no marcas ningún miembro, nadie podrá abrirlo desde su biblioteca (excepto superusuarios).</p>
+    <div class="form-actions"><button class="btn-primary" type="submit">Guardar accesos →</button><a class="secondary-btn" href="{% url 'manage_company' company.id %}">Cancelar</a></div>
+  </form>
+</div>
+{% endblock %}
